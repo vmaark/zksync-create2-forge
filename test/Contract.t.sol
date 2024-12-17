@@ -3,21 +3,18 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
 
-import "src/Contract.sol";
+import {ContractFactory} from "src/ContractFactory.sol";
 
 contract TestContract is Test {
-    Contract c;
+    ContractFactory factory;
 
     function setUp() public {
-        c = new Contract();
+        factory = new ContractFactory();
     }
 
-    function testBar() public {
-        assertEq(uint256(1), uint256(1), "ok");
-    }
-
-    function testFoo(uint256 x) public {
-        vm.assume(x < type(uint128).max);
-        assertEq(x + x, x * 2);
+    function testCreate2Address() public {
+        address createdContract = factory.createContract();
+        address addr = factory.getContractAddress();
+        assertEq(addr, createdContract);
     }
 }
